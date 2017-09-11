@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="http://passport.cnblogs.com/scripts/jsencrypt.min.js"></script>
+
+    <script type="text/javascript">
+        // 使用jsencrypt类库加密js方法，
+        function encryptRequest(reqUrl, data, publicKey) {
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(publicKey);
+            // ajax请求发送的数据对象
+            var sendData = new Object();
+            // 将data数组赋给ajax对象
+            for (var key in data) {
+                sendData[key] = encrypt.encrypt(data[key]);
+            }
+            console.info(sendData);
+
+            $.ajax({
+                url: reqUrl,
+                type: 'post',
+                data: sendData,
+                dataType: 'json',
+                //contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    console.info(data);
+                },
+                error: function (xhr) {
+                    //console.error('出错了');
+                }
+            });
+        }
+
+        // Call this code when the page is done loading.
+        $(function () {
+
+            $('#testme').click(function () {
+
+                var data = [];
+                data['username'] = $('#username').val();
+                data['passwd'] = $('#passwd').val();
+
+                var pkey = $('#pubkey').val();
+                encryptRequest('/', data, pkey);
+            });
+        });
+    </script>
+</head>
+
+<body>
+<form id="form1" runat="server">
+    <div>
+        <label for="pubkey">Public Key</label><br/>
+        <textarea id="pubkey" rows="15" cols="65">
+                {{ public_key }}
+            </textarea><br/>
+        <label for="input">Text to encrypt:</label><br/>
+        name:<input id="username" name="username" type="text" value="user"></input><br/>
+        password:<input id="passwd" name="passwd" type="password" value="123"></input><br/>
+        <input id="testme" type="button" value="submit"/><br/>
+    </div>
+</form>
+</body>
+</html>
