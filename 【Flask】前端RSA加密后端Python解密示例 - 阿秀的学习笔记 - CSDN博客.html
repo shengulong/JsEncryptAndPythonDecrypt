@@ -1,0 +1,1500 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    
+<head>          
+            <link rel="canonical" href="http://blog.csdn.net/yannanxiu/article/details/76436032"/> 
+
+   
+
+  
+ <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848"> 
+       
+    <title>【Flask】前端RSA加密后端Python解密示例 - 阿秀的学习笔记
+        - CSDN博客</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="这一篇文章是前端用 RSA 的 publicKey 进行加密，然后后端用 Python 进行解密的示例。" />
+
+    <meta name="keywords" content="Python,RSA,加密" />
+
+   
+    <script src="http://static.blog.csdn.net/scripts/blog_static_head.min.js" type="text/javascript"></script>
+
+    
+        <!--new top-->
+       
+       
+        <!--new top-->
+    
+      <!-- ad begin -->
+         
+    <!-- ad end-->
+
+    <link rel="Stylesheet" type="text/css" href="http://static.blog.csdn.net/skin/skin-yellow/css/style.css?v=1.1" />
+
+    
+
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="/u012163234/rss/list" />
+    <link rel="shortcut icon" href="http://c.csdnimg.cn/public/favicon.ico" />
+    <link type="text/css" rel="stylesheet" href="http://static.blog.csdn.net/scripts/SyntaxHighlighter/styles/blue.css" />
+ 
+
+
+
+    <link href="http://c.csdnimg.cn/blog/csdn_public_blog_detail.min.css" type="text/css" rel="stylesheet" />
+     
+         <link rel="stylesheet" href="http://static.blog.csdn.net/css/csdn_blog_detail.min.css" />
+
+  
+
+
+    <!-- 请置于所有广告位代码之前 --> 
+            <script src="http://dup.baidustatic.com/js/ds.js"></script>
+
+</head>
+
+
+<body>
+     
+        <div class="tracking-ad" data-view="true" data-mod="ad_popu_72"  data-mtp="62" data-order="40" data-con="ad_content_2072" >
+                     <script id="popuLayer_js_q" src="http://ads.csdn.net/js/popuLayer.js" defer="defer"  type="text/javascript"></script>
+                <div id="layerd" style="position: fixed;bottom:0px;right:0px;line-height:0px;z-index:1000">
+    	                <div class="J_close layer_close" style="display:;background-color:#efefef;padding:0px;color:#333;font:12px/24px Helvetica,Tahoma,Arial,sans-serif;text-align:right;">关闭</div><!-- 广告占位容器 -->
+                    <div id="cpro_u2895327">
+                        <!-- 投放代码 -->
+                        <script type="text/javascript" src="http://mpb1.iteye.com/ojylrgbykmqybf.js"></script>
+                    </div></div>
+                <script>  document.getElementById("popuLayer_js_q").onload = function () {
+      var styObjd = styObj = { width: "300px", "height": parseInt(250) + 28 };
+      window.CSDN.Layer.PopuLayer("#layerd", { storageName: "layerd", styleObj: styObjd, total: 50, expoire: 1000 * 60 });
+  }</script>
+            
+     
+        </div>
+
+    <!-- 广告位开始 -->
+        
+    <!-- 广告位结束 -->
+
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="http://c.csdnimg.cn/public/common/toolbar/js/html.js" type="text/javascript"></script>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/yannanxiu">阿秀的学习笔记</a></h2>
+            <h3>填坑小能手。</h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        
+     
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>           
+                <li id="btnContents"><a href="http://blog.csdn.net/yannanxiu?viewmode=contents"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_mulu'])">
+                    <img src="http://static.blog.csdn.net/images/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/yannanxiu?viewmode=list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_zhaiyao'])">
+                    <img src="http://static.blog.csdn.net/images/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/yannanxiu/rss/list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_RSS'])">
+                    <img src="http://static.blog.csdn.net/images/ico_rss.gif">订阅</span></a></li>                
+            
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "u012163234";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/yannanxiu";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "shengulong";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+                        <div class="ad_class">
+<div class="notice tracking-ad" data-mod='popu_3' > 
+
+
+<a href="http://blog.csdn.net/epubit17/article/details/77770966">
+<font color=red><strong>异步赠书：Kotlin领衔10本好书</strong></font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp
+
+<a href="http://edu.csdn.net/huiyiCourse/series_detail/63">
+<font color=red><strong>免费直播：AI时代，机器学习如何入门？</strong></font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp
+
+<a href="http://blog.csdn.net/turingbooks/article/details/77479427">
+<font color=blue><strong>程序员8月书讯</strong></font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp
+
+
+<a href="https://gitee.com/enterprises?from=csdn-sqbkxq">
+<font color=red><strong>项目管理+代码托管+文档协作，开发更流畅</strong></font></a>
+
+
+
+</div>                        </div>
+
+                        
+
+
+
+  
+
+
+
+
+
+
+<script   type="text/javascript" src="http://static.blog.csdn.net/scripts/category.js"></script>
+
+  <script type="text/ecmascript">
+      window.quickReplyflag = true;
+      var isBole = false; 
+      var fasrc="http://my.csdn.net/my/favorite/miniadd?t=%e3%80%90Flask%e3%80%91%e5%89%8d%e7%ab%afRSA%e5%8a%a0%e5%af%86%e5%90%8e%e7%ab%afPython%e8%a7%a3%e5%af%86%e7%a4%ba%e4%be%8b&u=http://blog.csdn.net/yannanxiu/article/details/76436032"
+    </script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Original"></span>
+
+    <h1>
+        <span class="link_title"><a href="/yannanxiu/article/details/76436032">
+        【Flask】前端RSA加密后端Python解密示例        
+           
+        </a>
+        </span>
+
+         
+    </h1>
+</div>
+
+   
+
+        <div class="article_manage clearfix">
+        <div class="article_l">
+            <span class="link_categories">
+            标签：
+              <a href='http://www.csdn.net/tag/Python' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">Python</a><a href='http://www.csdn.net/tag/RSA' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">RSA</a><a href='http://www.csdn.net/tag/%e5%8a%a0%e5%af%86' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">加密</a>
+            </span>
+        </div>
+        <div class="article_r">
+            <span class="link_postdate">2017-07-31 14:26</span>
+            <span class="link_view" title="阅读次数">466人阅读</span>
+            <span class="link_comments" title="评论次数"> <a href="#comments" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_pinglun'])">评论</a>(0)</span>
+            <span class="link_collect tracking-ad" data-mod="popu_171"> <a href="javascript:void(0);" onclick="javascript:collectArticle('%e3%80%90Flask%e3%80%91%e5%89%8d%e7%ab%afRSA%e5%8a%a0%e5%af%86%e5%90%8e%e7%ab%afPython%e8%a7%a3%e5%af%86%e7%a4%ba%e4%be%8b','76436032');return false;" title="收藏">收藏</a></span>
+             <span class="link_report"> <a href="#report" onclick="javascript:report(76436032,2);return false;" title="举报">举报</a></span>
+
+        </div>
+    </div>    <style type="text/css">        
+            .embody{
+                padding:10px 10px 10px;
+                margin:0 -20px;
+                border-bottom:solid 1px #ededed;                
+            }
+            .embody_b{
+                margin:0 ;
+                padding:10px 0;
+            }
+            .embody .embody_t,.embody .embody_c{
+                display: inline-block;
+                margin-right:10px;
+            }
+            .embody_t{
+                font-size: 12px;
+                color:#999;
+            }
+            .embody_c{
+                font-size: 12px;
+            }
+            .embody_c img,.embody_c em{
+                display: inline-block;
+                vertical-align: middle;               
+            }
+             .embody_c img{               
+                width:30px;
+                height:30px;
+            }
+            .embody_c em{
+                margin: 0 20px 0 10px;
+                color:#333;
+                font-style: normal;
+            }
+    </style>
+    <script  type="text/javascript">
+        $(function () {
+            try
+            {
+                var lib = eval("("+$("#lib").attr("value")+")");
+                var html = "";
+                if (lib.err == 0) {
+                    $.each(lib.data, function (i) {
+                        var obj = lib.data[i];
+                        //html += '<img src="' + obj.logo + '"/>' + obj.name + "&nbsp;&nbsp;";
+                        html += ' <a href="' + obj.url + '" target="_blank">';
+                        html += ' <img src="' + obj.logo + '">';
+                        html += ' <em><b>' + obj.name + '</b></em>';
+                        html += ' </a>';
+                    });
+                    if (html != "") {
+                        setTimeout(function () {
+                            $("#lib").html(html);                      
+                            $("#embody").show();
+                        }, 100);
+                    }
+                }      
+            } catch (err)
+            { }
+            
+        });
+    </script>
+      <div class="category clearfix">
+        <div class="category_l">
+           <img src="http://static.blog.csdn.net/images/category_icon.jpg">
+            <span>分类：</span>
+        </div>
+        <div class="category_r">
+                    <label  onclick="GetCategoryArticles('6050032','u012163234','top','76436032');">
+                        <span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">Python<em>（36）</em></span>
+                      <img class="arrow-down" src="http://static.blog.csdn.net/images/arrow_triangle _down.jpg" style="display:inline;">
+                      <img class="arrow-up" src="http://static.blog.csdn.net/images/arrow_triangle_up.jpg" style="display:none;">
+                        <div class="subItem">
+                            <div class="subItem_t"><a  href="http://blog.csdn.net/u012163234/article/category/6050032"  target="_blank">作者同类文章</a><i class="J_close">X</i></div>
+                            <ul class="subItem_l" id="top_6050032">                            
+                            </ul>
+                        </div>
+                    </label>                    
+                    <label  onclick="GetCategoryArticles('6480329','u012163234','top','76436032');">
+                        <span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">Flask<em>（22）</em></span>
+                      <img class="arrow-down" src="http://static.blog.csdn.net/images/arrow_triangle _down.jpg" style="display:inline;">
+                      <img class="arrow-up" src="http://static.blog.csdn.net/images/arrow_triangle_up.jpg" style="display:none;">
+                        <div class="subItem">
+                            <div class="subItem_t"><a  href="http://blog.csdn.net/u012163234/article/category/6480329"  target="_blank">作者同类文章</a><i class="J_close">X</i></div>
+                            <ul class="subItem_l" id="top_6480329">                            
+                            </ul>
+                        </div>
+                    </label>                    
+                    <label>
+                        <span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">网络安全<em></em></span>                       
+                    </label>      
+                    <label  onclick="GetCategoryArticles('6954618','u012163234','top','76436032');">
+                        <span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">JavaScript<em>（1）</em></span>
+                      <img class="arrow-down" src="http://static.blog.csdn.net/images/arrow_triangle _down.jpg" style="display:inline;">
+                      <img class="arrow-up" src="http://static.blog.csdn.net/images/arrow_triangle_up.jpg" style="display:none;">
+                        <div class="subItem">
+                            <div class="subItem_t"><a  href="http://blog.csdn.net/u012163234/article/category/6954618"  target="_blank">作者同类文章</a><i class="J_close">X</i></div>
+                            <ul class="subItem_l" id="top_6954618">                            
+                            </ul>
+                        </div>
+                    </label>                    
+                    <label  onclick="GetCategoryArticles('6871236','u012163234','top','76436032');">
+                        <span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">Web<em>（3）</em></span>
+                      <img class="arrow-down" src="http://static.blog.csdn.net/images/arrow_triangle _down.jpg" style="display:inline;">
+                      <img class="arrow-up" src="http://static.blog.csdn.net/images/arrow_triangle_up.jpg" style="display:none;">
+                        <div class="subItem">
+                            <div class="subItem_t"><a  href="http://blog.csdn.net/u012163234/article/category/6871236"  target="_blank">作者同类文章</a><i class="J_close">X</i></div>
+                            <ul class="subItem_l" id="top_6871236">                            
+                            </ul>
+                        </div>
+                    </label>                    
+        </div>
+    </div>
+        <div   class="bog_copyright">         
+            <p  class="copyright_p" >版权声明：本文为博主原创文章，未经博主允许不得转载。</p>
+        </div>
+
+  
+
+  
+  
+     
+
+
+<div id="article_content" class="article_content tracking-ad" data-mod=popu_307  data-dsm = "post" >
+        <div class="markdown_views"><h1 id="前言">前言</h1>
+
+<p>在使用 Flask 开发用户登录API的时候，我之前都是明文传输 username 和 password。这种传输方式有一定的安全隐患，password 可能会在传输过程中被窃听而造成用户密码的泄漏。</p>
+
+<p>那么我认为解决该问题的方法是这样的：在前端页面对数据进行加密，然后再发送到后端进行处理。</p>
+
+<p>这一篇文章是前端用 RSA 的 publicKey 进行加密，然后后端用 Python 进行解密的示例。</p>
+
+
+
+<h1 id="工具列表">工具列表</h1>
+
+<ul>
+<li>后端：Python3 <br>
+<ul><li>Flask</li>
+<li>PyCrypto（PyCrytodome）</li></ul></li>
+<li>前端 <br>
+<ul><li><a href="https://www.npmjs.com/package/jsencrypt" target="_blank">jsencrypt.js</a></li></ul></li>
+</ul>
+
+<p>后端使用<code>Cryptodome</code>库进行密钥的生成和解密，前端则使用<code>jsencrypt.js</code>库进行加密。</p>
+
+
+
+<h1 id="阅读提醒">阅读提醒</h1>
+
+<p>本文主要是提供前端RSA加密后端Python解密代码示例，不会做太详细的说明，也不会有代码打包下载链接，原理与步骤请细读示例代码或查阅相关资料。</p>
+
+
+
+<h1 id="后端">后端</h1>
+
+<p>下面首先说明Python后端所用到的工具。</p>
+
+
+
+<h2 id="pycrypto和pycrytodome">PyCrypto和PyCrytodome</h2>
+
+<p>PyCrypto 可能是 Python 中密码学方面最有名的第三方软件包。可惜的是，它的开发工作于2012年就已停止。幸运的是，有一个该项目的分支取代了 PyCrypto ，那就是 <strong>PyCrytodome</strong>。</p>
+
+<p>Linux下安装命令：</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs cmake">pip <span class="hljs-keyword">install</span> pycryptodome </code></pre>
+
+<p>Windows下安装命令：</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs cmake">pip <span class="hljs-keyword">install</span> pycryptodomex </code></pre>
+
+
+
+<h2 id="pycrytodome使用示例">PyCrytodome使用示例</h2>
+
+<p>安装好 pycryptodome 后，下面放上示例代码<code>RSA_demo.py</code>。</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span>
+<span class="hljs-comment"># coding=utf-8</span>
+<span class="hljs-comment"># Author: yannanxiu</span>
+<span class="hljs-string">"""
+create_rsa_key() - 创建RSA密钥
+my_encrypt_and_decrypt() - 加密解密测试
+"""</span>
+
+<span class="hljs-keyword">from</span> Cryptodome.PublicKey <span class="hljs-keyword">import</span> RSA
+<span class="hljs-keyword">from</span> Cryptodome.Cipher <span class="hljs-keyword">import</span> PKCS1_OAEP, PKCS1_v1_5
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_rsa_key</span><span class="hljs-params">(password=<span class="hljs-string">"123456"</span>)</span>:</span>
+    <span class="hljs-string">"""
+    创建RSA密钥
+    步骤说明：
+    1、从 Crypto.PublicKey 包中导入 RSA，创建一个密码
+    2、生成 1024/2048 位的 RSA 密钥
+    3、调用 RSA 密钥实例的 exportKey 方法，传入密码、使用的 PKCS 标准以及加密方案这三个参数。
+    4、将私钥写入磁盘的文件。
+    5、使用方法链调用 publickey 和 exportKey 方法生成公钥，写入磁盘上的文件。
+    """</span>
+
+    key = RSA.generate(<span class="hljs-number">1024</span>)
+    encrypted_key = key.exportKey(passphrase=password, pkcs=<span class="hljs-number">8</span>,
+                                  protection=<span class="hljs-string">"scryptAndAES128-CBC"</span>)
+    <span class="hljs-keyword">with</span> open(<span class="hljs-string">"my_private_rsa_key.bin"</span>, <span class="hljs-string">"wb"</span>) <span class="hljs-keyword">as</span> f:
+        f.write(encrypted_key)
+    <span class="hljs-keyword">with</span> open(<span class="hljs-string">"my_rsa_public.pem"</span>, <span class="hljs-string">"wb"</span>) <span class="hljs-keyword">as</span> f:
+        f.write(key.publickey().exportKey())
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encrypt_and_decrypt_test</span><span class="hljs-params">(password=<span class="hljs-string">"123456"</span>)</span>:</span>
+    <span class="hljs-comment"># 加载公钥</span>
+    recipient_key = RSA.import_key(
+        open(<span class="hljs-string">"my_rsa_public.pem"</span>).read()
+    )
+    cipher_rsa = PKCS1_v1_5.new(recipient_key)
+
+    en_data = cipher_rsa.encrypt(<span class="hljs-string">b"123456"</span>)
+    print(len(en_data), en_data)
+
+    <span class="hljs-comment"># 读取密钥</span>
+    private_key = RSA.import_key(
+        open(<span class="hljs-string">"my_private_rsa_key.bin"</span>).read(),
+        passphrase=password
+    )
+    cipher_rsa = PKCS1_v1_5.new(private_key)
+    data = cipher_rsa.decrypt(en_data, <span class="hljs-keyword">None</span>)
+
+    print(data)
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    <span class="hljs-comment"># create_rsa_key()</span>
+    encrypt_and_decrypt_test()
+</code></pre>
+
+<p>其中<code>create_rsa_key()</code>为创建密钥对，<code>encrypt_and_decrypt_test()</code>为加密解密的测试，用起来很简单对吧？</p>
+
+<p>既然知道如何在Python端解密数据了，那么下面就是前端的代码：</p>
+
+
+
+<h1 id="前端">前端</h1>
+
+<p>前端所用到的主要工具是<code>jsencrypt.js</code>。</p>
+
+
+
+<h2 id="jsencryptjs简介">jsencrypt.js简介</h2>
+
+<p><code>jsencrypt.js</code>是一个提供RSA加密、解密和密钥生成的JS库。其使用方式也非常简单。在其<a href="https://www.npmjs.com/package/jsencrypt" target="_blank">官网</a>就有给出示例代码。</p>
+
+
+
+<h1 id="flask工程示例">Flask工程示例</h1>
+
+
+
+<h2 id="python后端">Python后端</h2>
+
+<p>新建一个Python脚本，取名为<code>rsa_flask_demo.py</code>，把下面代码复制过去。</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span>
+<span class="hljs-comment"># coding=utf-8</span>
+<span class="hljs-comment"># Author: yannanxiu</span>
+
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, render_template, request, current_app
+<span class="hljs-keyword">from</span> Cryptodome.PublicKey <span class="hljs-keyword">import</span> RSA
+<span class="hljs-keyword">from</span> Cryptodome.Cipher <span class="hljs-keyword">import</span> PKCS1_OAEP, PKCS1_v1_5
+<span class="hljs-keyword">import</span> base64
+<span class="hljs-keyword">from</span> urllib <span class="hljs-keyword">import</span> parse
+
+<span class="hljs-comment"># 获取当前路径</span>
+curr_dir = os.path.dirname(os.path.realpath(__file__))
+private_key_file = os.path.join(curr_dir, <span class="hljs-string">"my_private_rsa_key.bin"</span>)
+public_key_file = os.path.join(curr_dir, <span class="hljs-string">"my_rsa_public.pem"</span>)
+
+app = Flask(__name__)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decrypt_data</span><span class="hljs-params">(inputdata, code=<span class="hljs-string">"123456"</span>)</span>:</span>
+    <span class="hljs-comment"># URLDecode</span>
+    data = parse.unquote(inputdata)
+
+    <span class="hljs-comment"># base64decode</span>
+    data = base64.b64decode(data)
+
+    private_key = RSA.import_key(
+        open(curr_dir + <span class="hljs-string">"/my_private_rsa_key.bin"</span>).read(),
+        passphrase=code
+    )
+    <span class="hljs-comment"># 使用 PKCS1_v1_5，不要用 PKCS1_OAEP</span>
+    <span class="hljs-comment"># 使用 PKCS1_OAEP 的话，前端 jsencrypt.js 加密的数据解密不了</span>
+    cipher_rsa = PKCS1_v1_5.new(private_key)
+
+    <span class="hljs-comment"># 当解密失败，会返回 sentinel</span>
+    sentinel = <span class="hljs-keyword">None</span>
+    ret = cipher_rsa.decrypt(data, sentinel)
+
+    <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-decorator">@app.route('/', methods=["GET", "POST"])</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rsa</span><span class="hljs-params">()</span>:</span>
+    public_key = <span class="hljs-keyword">None</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-string">"GET"</span> == request.method:
+        <span class="hljs-keyword">with</span> open(public_key_file) <span class="hljs-keyword">as</span> file:
+            public_key = file.read()
+    <span class="hljs-keyword">elif</span> <span class="hljs-string">"POST"</span> == request.method:
+        username = request.values.get(<span class="hljs-string">"username"</span>)
+        password = request.values.get(<span class="hljs-string">"passwd"</span>)
+        current_app.logger.debug(<span class="hljs-string">"username:"</span> + username + <span class="hljs-string">"\n"</span> + <span class="hljs-string">"password:"</span> + password)
+
+        <span class="hljs-comment"># decrypt</span>
+        username_ret = decrypt_data(username)
+        password_ret = decrypt_data(password)
+        <span class="hljs-keyword">if</span> username_ret <span class="hljs-keyword">and</span> password_ret:
+            current_app.logger.debug(username_ret.decode() + <span class="hljs-string">" "</span> + password_ret.decode())
+
+    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">"rsa_view.html"</span>, public_key=public_key)
+
+
+<span class="hljs-decorator">@app.route('/js_rsa_test', methods=["GET", "POST"])</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">js_rsa_test</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">"js_rsa_test.html"</span>)
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    app.run(debug=<span class="hljs-keyword">True</span>)
+</code></pre>
+
+<p>把<code>rsa_flask_demo.py</code>与前面的<code>RSA_demo.py</code>脚本放在一起，再用<code>RSA_demo.py</code>生成一组密钥对。或者把前面生成密钥对文件放在同一个目录下也可以。</p>
+
+
+
+<h2 id="前端代码">前端代码</h2>
+
+<p>在同一目录下新建一个<code>templates</code>文件夹，用来存放Flask的前端模板。</p>
+
+<p>在<code>templates</code>文件夹新建<code>rsa_view.html</code>，并拷贝下面代码过去，该HTML文件与Flask中的<code>rsa()</code>相对应。</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs handlebars"><span class="xml"><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">xmlns</span>=<span class="hljs-value">"http://www.w3.org/1999/xhtml"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">http-equiv</span>=<span class="hljs-value">"Content-Type"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"text/html; charset=utf-8"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://code.jquery.com/jquery-1.8.3.min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://passport.cnblogs.com/scripts/jsencrypt.min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+        <span class="hljs-comment">// 使用jsencrypt类库加密js方法，</span>
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">encryptRequest</span><span class="hljs-params">(reqUrl, data, publicKey)</span> {</span>
+            <span class="hljs-keyword">var</span> encrypt = <span class="hljs-keyword">new</span> JSEncrypt();
+            encrypt.setPublicKey(publicKey);
+            <span class="hljs-comment">// ajax请求发送的数据对象</span>
+            <span class="hljs-keyword">var</span> sendData = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Object</span>();
+            <span class="hljs-comment">// 将data数组赋给ajax对象</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> data) {
+                sendData[key] = encrypt.encrypt(data[key]);
+            }
+            console.info(sendData);
+
+            $.ajax({
+                url: reqUrl,
+                type: <span class="hljs-string">'post'</span>,
+                data: sendData,
+                dataType: <span class="hljs-string">'json'</span>,
+                <span class="hljs-comment">//contentType: 'application/json; charset=utf-8',</span>
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+                    console.info(data);
+                },
+                error: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xhr)</span> {</span>
+                    <span class="hljs-comment">//console.error('出错了');</span>
+                }
+            });
+        }
+
+        <span class="hljs-comment">// Call this code when the page is done loading.</span>
+        $(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+
+            $(<span class="hljs-string">'#testme'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+
+                <span class="hljs-keyword">var</span> data = [];
+                data[<span class="hljs-string">'username'</span>] = $(<span class="hljs-string">'#username'</span>).val();
+                data[<span class="hljs-string">'passwd'</span>] = $(<span class="hljs-string">'#passwd'</span>).val();
+
+                <span class="hljs-keyword">var</span> pkey = $(<span class="hljs-string">'#pubkey'</span>).val();
+                encryptRequest(<span class="hljs-string">'/'</span>, data, pkey);
+            });
+        });
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"form1"</span> <span class="hljs-attribute">runat</span>=<span class="hljs-value">"server"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"pubkey"</span>&gt;</span>Public Key<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">textarea</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"pubkey"</span> <span class="hljs-attribute">rows</span>=<span class="hljs-value">"15"</span> <span class="hljs-attribute">cols</span>=<span class="hljs-value">"65"</span>&gt;</span>
+                </span><span class="hljs-expression">{{ <span class="hljs-variable">public</span>_<span class="hljs-variable">key</span> }}</span><span class="xml">
+            <span class="hljs-tag">&lt;/<span class="hljs-title">textarea</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"input"</span>&gt;</span>Text to encrypt:<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+        name:<span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"username"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"username"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"user"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">input</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+        password:<span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"passwd"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"passwd"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"password"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"123"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">input</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"testme"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"button"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"submit"</span>/&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></span></code></pre>
+
+<p>运行<code>rsa_flask_demo.py</code>，访问<code>http://127.0.0.1:5000/</code>，即可看到下面页面。直接点击submit按钮即可。</p>
+
+<p><img src="http://img.blog.csdn.net/20170731142347318" alt="提交页面" title=""></p>
+
+<p>当后台页面打印：</p>
+
+<pre class="prettyprint"><code class=" hljs asciidoc"><span class="hljs-code">--------------------------------------------------------------------------------
+DEBUG in rsa_flask_demo [F:/Flask/RSA_Flask/rsa_flask_demo.py:57]:
+user 123
+--------------------------------------------------------------------------------</span></code></pre>
+
+<p>即说明解密成功！</p>
+
+
+
+<h2 id="其他">其他</h2>
+
+<p><code>rsa_flask_demo.py</code>中的<code>js_rsa_test()</code>为JS脚本测试页面，其对应的HTML代码如下：</p>
+
+
+
+<pre class="prettyprint"><code class=" hljs xml"><span class="hljs-doctype">&lt;!doctype html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>JavaScript RSA Encryption<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://code.jquery.com/jquery-1.8.3.min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://passport.cnblogs.com/scripts/jsencrypt.min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript">
+
+      <span class="hljs-comment">// Call this code when the page is done loading.</span>
+      $(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+
+        <span class="hljs-comment">// Run a quick encryption/decryption when they click.</span>
+        $(<span class="hljs-string">'#testme'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+
+          <span class="hljs-comment">// Encrypt with the public key...</span>
+          <span class="hljs-keyword">var</span> encrypt = <span class="hljs-keyword">new</span> JSEncrypt();
+          encrypt.setPublicKey($(<span class="hljs-string">'#pubkey'</span>).val());
+          <span class="hljs-keyword">var</span> encrypted = encrypt.encrypt($(<span class="hljs-string">'#input'</span>).val());
+
+          <span class="hljs-comment">// Decrypt with the private key...</span>
+          <span class="hljs-keyword">var</span> decrypt = <span class="hljs-keyword">new</span> JSEncrypt();
+          decrypt.setPrivateKey($(<span class="hljs-string">'#privkey'</span>).val());
+          <span class="hljs-keyword">var</span> uncrypted = decrypt.decrypt(encrypted);
+
+          <span class="hljs-comment">// Now a simple check to see if the round-trip worked.</span>
+          <span class="hljs-keyword">if</span> (uncrypted == $(<span class="hljs-string">'#input'</span>).val()) {
+            alert(<span class="hljs-string">'It works!!!'</span>);
+          }
+          <span class="hljs-keyword">else</span> {
+            alert(<span class="hljs-string">'Something went wrong....'</span>);
+          }
+        });
+      });
+    </span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"privkey"</span>&gt;</span>Private Key<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">textarea</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"privkey"</span> <span class="hljs-attribute">rows</span>=<span class="hljs-value">"15"</span> <span class="hljs-attribute">cols</span>=<span class="hljs-value">"65"</span>&gt;</span>-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQDlOJu6TyygqxfWT7eLtGDwajtNFOb9I5XRb6khyfD1Yt3YiCgQ
+WMNW649887VGJiGr/L5i2osbl8C9+WJTeucF+S76xFxdU6jE0NQ+Z+zEdhUTooNR
+aY5nZiu5PgDB0ED/ZKBUSLKL7eibMxZtMlUDHjm4gwQco1KRMDSmXSMkDwIDAQAB
+AoGAfY9LpnuWK5Bs50UVep5c93SJdUi82u7yMx4iHFMc/Z2hfenfYEzu+57fI4fv
+xTQ//5DbzRR/XKb8ulNv6+CHyPF31xk7YOBfkGI8qjLoq06V+FyBfDSwL8KbLyeH
+m7KUZnLNQbk8yGLzB3iYKkRHlmUanQGaNMIJziWOkN+N9dECQQD0ONYRNZeuM8zd
+8XJTSdcIX4a3gy3GGCJxOzv16XHxD03GW6UNLmfPwenKu+cdrQeaqEixrCejXdAF
+z/7+BSMpAkEA8EaSOeP5Xr3ZrbiKzi6TGMwHMvC7HdJxaBJbVRfApFrE0/mPwmP5
+rN7QwjrMY+0+AbXcm8mRQyQ1+IGEembsdwJBAN6az8Rv7QnD/YBvi52POIlRSSIM
+V7SwWvSK4WSMnGb1ZBbhgdg57DXaspcwHsFV7hByQ5BvMtIduHcT14ECfcECQATe
+aTgjFnqE/lQ22Rk0eGaYO80cc643BXVGafNfd9fcvwBMnk0iGX0XRsOozVt5Azil
+psLBYuApa66NcVHJpCECQQDTjI2AQhFc1yRnCU/YgDnSpJVm1nASoRUnU8Jfm3Oz
+uku7JUXcVpt08DFSceCEX9unCuMcT72rAQlLpdZir876
+-----END RSA PRIVATE KEY-----<span class="hljs-tag">&lt;/<span class="hljs-title">textarea</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"pubkey"</span>&gt;</span>Public Key<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">textarea</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"pubkey"</span> <span class="hljs-attribute">rows</span>=<span class="hljs-value">"15"</span> <span class="hljs-attribute">cols</span>=<span class="hljs-value">"65"</span>&gt;</span>-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDlOJu6TyygqxfWT7eLtGDwajtN
+FOb9I5XRb6khyfD1Yt3YiCgQWMNW649887VGJiGr/L5i2osbl8C9+WJTeucF+S76
+xFxdU6jE0NQ+Z+zEdhUTooNRaY5nZiu5PgDB0ED/ZKBUSLKL7eibMxZtMlUDHjm4
+gwQco1KRMDSmXSMkDwIDAQAB
+-----END PUBLIC KEY-----<span class="hljs-tag">&lt;/<span class="hljs-title">textarea</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">label</span> <span class="hljs-attribute">for</span>=<span class="hljs-value">"input"</span>&gt;</span>Text to encrypt:<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">textarea</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"input"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"input"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text"</span> <span class="hljs-attribute">rows</span>=<span class="hljs-value">4</span> <span class="hljs-attribute">cols</span>=<span class="hljs-value">70</span>&gt;</span>This is a test!<span class="hljs-tag">&lt;/<span class="hljs-title">textarea</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"testme"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"button"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"Test Me!!!"</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">br</span>/&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+
+<p>启动服务后访问<code>http://127.0.0.1:5000/js_rsa_test</code>即可。代码内容主要是先用<code>jsencrypt.js</code>加密数据，再进行解密，如果成功则弹出<code>It works!!!</code>对话框。不传输数据到后台，仅仅作为前端测试。</p>
+
+
+
+<h2 id="目录结构">目录结构</h2>
+
+
+
+<pre class="prettyprint"><code class=" hljs autohotkey">│  my_private_rs<span class="hljs-built_in">a_key</span>.bin
+│  my_rs<span class="hljs-built_in">a_public</span>.pem
+│  RS<span class="hljs-built_in">A_demo</span>.py
+│  rs<span class="hljs-built_in">a_flask</span>_demo.py
+│
+└─templates
+        js_rs<span class="hljs-built_in">a_test</span>.html
+        rs<span class="hljs-built_in">a_view</span>.html</code></pre></div>
+        <script  type="text/javascript">
+            $(function () {
+                $('pre.prettyprint code').each(function () {
+                    var lines = $(this).text().split('\n').length;
+                    var $numbering = $('<ul/>').addClass('pre-numbering').hide();
+                    $(this).addClass('has-numbering').parent().append($numbering);
+                    for (i = 1; i <= lines; i++) {
+                        $numbering.append($('<li/>').text(i));
+                    };
+                    $numbering.fadeIn(1700);
+                });
+            });
+        </script>
+   
+</div>
+
+
+
+
+<!-- Baidu Button BEGIN -->
+
+
+
+
+<div class="bdsharebuttonbox tracking-ad" style="float: right;" data-mod="popu_172">
+<a href="#" class="bds_more" data-cmd="more" style="background-position:0 0 !important; background-image: url(http://bdimg.share.baidu.com/static/api/img/share/icons_0_16.png?v=d754dcc0.png) !important"></a>
+<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"  style="background-position:0 -52px !important"></a>
+<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"style="background-position:0 -104px !important"></a>
+<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"style="background-position:0 -260px !important"></a>
+<a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"style="background-position:0 -208px !important"></a>
+<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"style="background-position:0 -1612px !important" ></a>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+<!-- Baidu Button END -->
+
+   
+
+<!--172.16.140.12-->
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+
+
+ 
+
+
+        <div id="digg" ArticleId="76436032" >
+            <dl id="btnDigg" class="digg digg_enable"  onclick="btndigga();">
+               
+                 <dt>顶</dt>
+                <dd>0</dd>
+            </dl>
+           
+              
+            <dl id="btnBury" class="digg digg_enable"  onclick="btnburya();">
+              
+                  <dt>踩</dt>
+                <dd>0</dd>               
+            </dl>
+            
+        </div>
+     <div class="tracking-ad" data-mod="popu_222"><a href="javascript:void(0);" >&nbsp;</a>   </div>
+    <div class="tracking-ad" data-mod="popu_223"> <a href="javascript:void(0);" >&nbsp;</a></div>
+    <script type="text/javascript">
+        function btndigga() {
+            $(".tracking-ad[data-mod='popu_222'] a").click();
+        }
+        function btnburya() {
+            $(".tracking-ad[data-mod='popu_223'] a").click();
+        }
+            </script>
+
+   <ul class="article_next_prev">
+                <li class="prev_article"><span  onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian']);location.href='http://blog.csdn.net/u012163234/article/details/76146215';">上一篇</span><a href="http://blog.csdn.net/u012163234/article/details/76146215" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian'])">【MQTT】EMQ初体验——在CentOS7上部署MQTT服务器</a></li>
+                <li class="next_article"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian']);location.href='http://blog.csdn.net/u012163234/article/details/77185796';">下一篇</span><a href="http://blog.csdn.net/u012163234/article/details/77185796" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian'])">【Python】使用Python模拟设备接入阿里云物联网的MQTT服务器</a></li>
+    </ul>
+
+    <div style="clear:both; height:10px;"></div>
+
+
+            <div class="similar_article"   >
+                    <h4></h4>
+                    <div class="similar_c"style="margin:20px 0px 0px 0px">
+                        <div class="similar_c_t">
+                          &nbsp;&nbsp;相关文章推荐
+                        </div>
+                   
+                        <div class="similar_wrap tracking-ad" data-mod="popu_36"  style="max-height:250px">                       
+                            <ul class="similar_list fl">    
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://blog.csdn.net/nyist327/article/details/48496595" title="Python 进行RSA私钥加密，公钥解密" strategy="BlogCommendFromBaidu_0" target="_blank">Python 进行RSA私钥加密，公钥解密</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://edu.csdn.net/course/detail/2306?utm_source=blog7" title="Go语言编程入门实战技巧" strategy="undefined" target="_blank">Go语言编程入门实战技巧</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://blog.csdn.net/oMingZi12345678/article/details/53636395" title="Flask框架中密码的加盐哈希加密和验证功能的用法详解" strategy="BlogCommendFromBaidu_1" target="_blank">Flask框架中密码的加盐哈希加密和验证功能的用法详解</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://edu.csdn.net/huiyiCourse/series_detail/65?utm_source=blog7" title="机器学习大咖在等你" strategy="undefined" target="_blank">机器学习大咖在等你</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://blog.csdn.net/dszgf5717/article/details/53489805" title="Python下RSA加密/解密， 签名/" strategy="BlogCommendFromBaidu_2" target="_blank">Python下RSA加密/解密， 签名/</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://edu.csdn.net/course/detail/1923?utm_source=blog7" title="Android高手进阶" strategy="undefined" target="_blank">Android高手进阶</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://blog.csdn.net/mawming/article/details/53694237" title="RSA前端加密后端解密" strategy="BlogCommendFromCsdn_3" target="_blank">RSA前端加密后端解密</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://edu.csdn.net/course/detail/5627?utm_source=blog7" title="深入探究Linux/VxWorks的设备树" strategy="undefined" target="_blank">深入探究Linux/VxWorks的设备树</a>
+                                   </li>
+                            </ul>
+                              <ul class="similar_list fr">      
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://download.csdn.net/download/t_dfeng/9855243" title="计算机软件专业电脑网络编程Web开发常用术语英语词汇[后端java,python前端js,移动Android]" strategy="BlogCommendFromCsdn_4" target="_blank">计算机软件专业电脑网络编程Web开发常用术语英语词汇[后端java,python前端js,移动Android]</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://edu.csdn.net/huiyiCourse/series_detail/66?utm_source=blog7" title="SDCC 2017之区块链技术实战线上峰会" strategy="undefined" target="_blank">SDCC 2017之区块链技术实战线上峰会</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://blog.csdn.net/yk19851111/article/details/52610099" title="码农周刊分类整理" strategy="BlogCommendFromCsdn_5" target="_blank">码农周刊分类整理</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://edu.csdn.net/huiyiCourse/series_detail/64?utm_soruce=blog7" title="SDCC 2017之大数据技术实战线上峰会" strategy="undefined" target="_blank">SDCC 2017之大数据技术实战线上峰会</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://download.csdn.net/download/hnsdjike/9487727" title="RSA前后端加密解密" strategy="BlogCommendFromCsdn_6" target="_blank">RSA前后端加密解密</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://blog.csdn.net/freeking101/article/details/62893343" title="python 爬虫教程" strategy="BlogCommendFromCsdn_7" target="_blank">python 爬虫教程</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://download.csdn.net/download/yangjingxm/8778555" title="rsa前端加密，java后台解密" strategy="BlogCommendFromCsdn_8" target="_blank">rsa前端加密，java后台解密</a>
+                                   </li>
+                                   <li>
+                                       <em>•</em>
+                                       <a href="http://blog.csdn.net/zengdejie123/article/details/69396263" title="RSA实现JS前端加密，PHP后端解密" strategy="BlogCommendFromCsdn_9" target="_blank">RSA实现JS前端加密，PHP后端解密</a>
+                                   </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>   
+      
+</div>
+
+     <div>
+           
+
+       
+                           
+            <!-- 广告位：PC端-博客内容页-banner1-960*90 --> 
+           
+         <script type="text/javascript" src="http://mpb1.iteye.com/kfunnhoouimhnlou.js"></script>
+    </div>
+
+<div id="suggest"></div>
+         <script  language="javascript" type='text/javascript'>     
+             $(function(){
+                 $.get("/u012163234/svc/GetSuggestContent/76436032",function(data){
+                     $("#suggest").html(data);
+                 });     
+             });             
+         </script>  
+
+
+
+            
+                                    
+            
+                                    
+
+        <!-- 广告位开始 -->
+        <!-- 广告位结束 -->
+
+
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list">
+    </div>
+    <div id="comment_bar">
+    </div>
+    <div id="comment_form">
+    </div>
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '76436032';
+    var commentscount = 0;
+    var islock = false
+</script>
+
+    <div id="ad_bot">
+    </div>
+<div id="report_dialog">
+</div>
+
+<div id="d-top"  style="bottom:60px;">
+
+        <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="http://static.blog.csdn.net/images/blog-icon-reply.png" alt="快速回复">
+        </a>    
+    <a id="d-top-a" class="btn btn-top backtop"  style="display: none;" title="返回顶部" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_huidaodingbu'])" style="">         
+         <img src="http://static.blog.csdn.net/images/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+        
+        setTimeout(function(){
+            $("#ad_frm_2").height("200px");
+        },1000);    
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+
+
+
+
+
+<div id="pop_win" style="display:none ;position: absolute; z-index: 10000; border: 1px solid rgb(220, 220, 220); top: 222.5px; left: 630px; opacity: 1; background: none 0px 0px repeat scroll rgb(255, 255, 255);">
+    
+</div>
+<div id="popup_mask"></div>
+<style>
+    #popup_mask
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+        left: 0px;
+        top: 0px;
+        opacity: 0.3;
+        filter: alpha(opacity=30);
+        display: none;
+    }
+
+</style>
+
+
+
+
+<script type="text/javascript">
+    $(function(){        
+        
+        setTimeout(function(){
+            $(".comment_body:contains('回复')").each(function(index,item){
+                var u=$(this).text().split('：')[0].toString().replace("回复","")
+                var thisComment=$(this);
+                if(u)
+                {
+                    $.getJSON("https://passport.csdn.net/get/nick?callback=?", {users: u}, function(a) {
+                        if(a!=null&&a.data!=null&&a.data.length>0)
+                        {
+                            nick=a.data[0].n; 
+                            if(u!=nick)
+                            {
+                                thisComment.text(thisComment.text().replace(u,nick));  
+                            }
+                        }       
+                    });  
+                }
+            });         
+
+        },200);  
+
+        setTimeout(function(){
+            $(".math").each(function(index,value){$(this).find("span").last().css("color","#fff"); })
+        },5000);
+
+        setTimeout(function(){
+            $(".math").each(function(index,value){$(this).find("span").last().css("color","#fff"); })
+        },10000);
+
+        setTimeout(function(){
+            $(".math").each(function(index,value){$(this).find("span").last().css("color","#fff"); })
+        },15000);
+        
+        setTimeout(function(){
+            $("a img[src='http://js.tongji.linezing.com/stats.gif']").parent().css({"position":"absolute","left":"50%"});
+        },300);
+    });
+
+    function loginbox(){
+        var $logpop=$("#pop_win");
+        $logpop.html('<iframe src="https://passport.csdn.net/account/loginbox?service=http://static.blog.csdn.net/callback.htm" frameborder="0" height="600" width="400" scrolling="no"></iframe>');
+
+        $('#popup_mask').css({
+            opacity: 0.5,
+            width: $( document ).width() + 'px',
+            height:  $( document ).height() + 'px'
+        });
+        $('#popup_mask').css("display","block");
+ 
+        $logpop.css( {
+            top: ($( window ).height() - $logpop.height())/ 2  + $( window 
+       ).scrollTop() + 'px',
+            left:($( window ).width() - $logpop.width())/ 2
+        } );
+ 
+        setTimeout( function () {
+            $logpop.show();
+            $logpop.css( {
+                opacity: 1
+            } );
+        }, 200 );
+ 
+        $('#popup_mask').unbind("click");
+        $('#popup_mask').bind("click", function(){
+            $('#popup_mask').hide();
+            var $clopop = $("#pop_win");
+            $("#common_ask_div_sc").css("display","none");
+            $clopop.css( {
+                opacity: 0
+            } );
+            setTimeout( function () {
+                $clopop.hide();
+            }, 350 );
+            return false;
+        });
+    }   
+
+    var articletitle='【Flask】前端RSA加密后端Python解密示例';
+
+</script>
+
+
+
+
+
+
+
+
+
+
+                        <div class="clear">
+                        </div>
+                    </div>                   
+                
+            </div>
+                   
+           <div id="side">
+               
+    <div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/u012163234" target="_blank">
+    <img src="http://avatar.csdn.net/F/B/6/1_u012163234.jpg" title="访问我的空间" style="max-width:90%"/>
+    </a>
+    <br />
+    <span><a href="http://my.csdn.net/u012163234" class="user_name" target="_blank">u012163234</a></span>
+</div>
+<div class="interact">
+
+    <a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]"></a>
+
+ <a href="javascript:void(0);" class="letter"  title="[发私信]" onclick="window.open('http://msg.csdn.net/letters/model?receiver=u012163234','_blank','height=350,width=700');_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_sixin'])"></a>  
+</div>
+<div id="blog_medal">
+                <div id="bms_box">
+                                            <a  target="_blank">
+                                                    <img src="http://c.csdnimg.cn/jifen/images/xunzhang/xunzhang/chizhiyiheng.png" onmouseover="m_over_m(this,4)" onmouseout="m_out_m()" alt="4" >
+                                            </a>
+               </div>
+</div>
+<ul id="blog_rank">
+    <li>访问：<span>273470次</span></li>
+    <li>积分：<span>4230</span> </li>    
+    <li >等级： <span style="position:relative;display:inline-block;z-index:1" >
+            <img src="http://c.csdnimg.cn/jifen/images/xunzhang/jianzhang/blog5.png" alt="" style="vertical-align: middle;" id="leveImg">
+            <div id="smallTittle" style=" position: absolute;  left: -24px;  top: 25px;  text-align: center;  width: 101px;  height: 32px;  background-color: #fff;  line-height: 32px;  border: 2px #DDDDDD solid;  box-shadow: 0px 2px 2px rgba (0,0,0,0.1);  display: none;   z-index: 999;">
+            <div style="left: 42%;  top: -8px;  position: absolute;  width: 0;  height: 0;  border-left: 10px solid transparent;  border-right: 10px solid transparent;  border-bottom: 8px solid #EAEAEA;"></div>
+            积分：4230 </div>
+        </span>  </li>
+    <li>排名：<span>第7418名</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>154篇</span></li>
+    <li>转载：<span>21篇</span></li>
+    <li>译文：<span>2篇</span></li>
+    <li>评论：<span>202条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body" class="form_search">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search csdn-tracking-statistics" target="_blank"  data-mod="popu_306">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字" /></span>
+        <input id="btnSubmit" type="button" value="搜索" title="search in blog" />
+        <input type="hidden" name="q" id="inputQ" />
+        <input type="hidden" name="t" value="blog" />
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div>
+
+<script type="text/javascript">
+
+   
+    $(function () {
+        $("#btnSubmit").unbind("click");
+        $("#btnSubmit").click(function () {           
+            search();
+        });
+
+        $("#frmSearch").submit(function () {           
+            search();
+            return false;
+        });
+
+        function search()
+        {
+            if ($("#inputSearch").val() == "") {               
+                alert("请录入搜索关键词！");                         
+                return false;
+            }
+            //var url = "http://so.csdn.net/so/search/s.do?q=" + encodeURIComponent($("#inputSearch").val()) + "&u=" + username + "&t=blog";           
+            var url = "https://www.baidu.com/s?wd=" + encodeURIComponent($("#inputSearch").val()) + "%20site%3Ablog.csdn.net"
+            window.location.href = url;
+        }   
+    });
+</script><div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">    
+                 <li>
+                    <a href="/u012163234/article/category/1764403" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">C语言</a><span>(24)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/1794213" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">单片机</a><span>(21)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/1858683" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">嵌入式Linux</a><span>(3)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/2273575" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">未分类</a><span>(3)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/2900277" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">电子硬件</a><span>(15)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/5764629" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">RAD Builder XE8</a><span>(16)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/5870617" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Android</a><span>(3)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6039232" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">iOS</a><span>(1)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6050032" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Python</a><span>(37)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6061881" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">MySQL</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6152301" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">ESP8266</a><span>(17)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6174815" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">CC2530/Contiki</a><span>(3)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6218978" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">网络通信</a><span>(5)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6219175" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">算法</a><span>(7)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6326020" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">嵌入式</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6442380" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">MQTT</a><span>(8)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6443821" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">STM32</a><span>(4)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6443896" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">keil MDK</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6480329" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Flask</a><span>(23)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6540311" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Linux</a><span>(5)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6691077" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">机器学习</a><span>(1)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6716534" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">SNMP</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6770374" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">运维监控</a><span>(1)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6871236" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Web</a><span>(4)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6871238" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Apache</a><span>(3)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6871517" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Django</a><span>(1)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6946192" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">前端</a><span>(1)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/6954618" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">JavaScript</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/7010421" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">ESP32</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="/u012163234/article/category/7065781" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">网络安全</a><span>(1)</span>
+                </li>
+</ul>
+</div><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list">
+<!--归档统计-->
+<li><a href="/u012163234/article/month/2017/08">2017年08月</a><span>(2)</span></li><li><a href="/u012163234/article/month/2017/07">2017年07月</a><span>(4)</span></li><li><a href="/u012163234/article/month/2017/06">2017年06月</a><span>(2)</span></li><li><a href="/u012163234/article/month/2017/05">2017年05月</a><span>(5)</span></li><li><a href="/u012163234/article/month/2017/04">2017年04月</a><span>(10)</span></li><li><a href="/u012163234/article/month/2017/03">2017年03月</a><span>(5)</span></li><li><a href="/u012163234/article/month/2017/02">2017年02月</a><span>(4)</span></li><li><a href="/u012163234/article/month/2017/01">2017年01月</a><span>(4)</span></li><li><a href="/u012163234/article/month/2016/12">2016年12月</a><span>(8)</span></li><li><a href="/u012163234/article/month/2016/11">2016年11月</a><span>(8)</span></li><li><a href="/u012163234/article/month/2016/10">2016年10月</a><span>(9)</span></li><li><a href="/u012163234/article/month/2016/09">2016年09月</a><span>(10)</span></li><li><a href="/u012163234/article/month/2016/08">2016年08月</a><span>(13)</span></li><li><a href="/u012163234/article/month/2016/07">2016年07月</a><span>(7)</span></li><li><a href="/u012163234/article/month/2016/06">2016年06月</a><span>(4)</span></li><li><a href="/u012163234/article/month/2016/05">2016年05月</a><span>(11)</span></li><li><a href="/u012163234/article/month/2016/04">2016年04月</a><span>(5)</span></li><li><a href="/u012163234/article/month/2016/03">2016年03月</a><span>(4)</span></li><li><a href="/u012163234/article/month/2016/02">2016年02月</a><span>(1)</span></li><li><a href="/u012163234/article/month/2016/01">2016年01月</a><span>(1)</span></li><li><a href="/u012163234/article/month/2015/12">2015年12月</a><span>(2)</span></li><li><a href="/u012163234/article/month/2015/10">2015年10月</a><span>(3)</span></li><li><a href="/u012163234/article/month/2015/09">2015年09月</a><span>(10)</span></li><li><a href="/u012163234/article/month/2015/08">2015年08月</a><span>(8)</span></li><li><a href="/u012163234/article/month/2015/07">2015年07月</a><span>(1)</span></li><li><a href="/u012163234/article/month/2015/03">2015年03月</a><span>(4)</span></li><li><a href="/u012163234/article/month/2015/02">2015年02月</a><span>(1)</span></li><li><a href="/u012163234/article/month/2015/01">2015年01月</a><span>(2)</span></li><li><a href="/u012163234/article/month/2014/09">2014年09月</a><span>(1)</span></li><li><a href="/u012163234/article/month/2014/08">2014年08月</a><span>(1)</span></li><li><a href="/u012163234/article/month/2014/06">2014年06月</a><span>(2)</span></li><li><a href="/u012163234/article/month/2014/05">2014年05月</a><span>(1)</span></li><li><a href="/u012163234/article/month/2014/01">2014年01月</a><span>(6)</span></li><li><a href="/u012163234/article/month/2013/12">2013年12月</a><span>(9)</span></li><li><a href="/u012163234/article/month/2013/11">2013年11月</a><span>(9)</span></li>
+</div>
+</ul>
+</div>
+<div id="hotarticls" class="panel tracking-ad" data-mod="popu_340">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="/yannanxiu/article/details/52703946" title="【MQTT】在Windows下搭建MQTT服务器">【MQTT】在Windows下搭建MQTT服务器</a><span>(19391)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/53088534" title="【ESP8266】ESP8266的MQTT客户端搭建教程（基于NONS_SDK_v2.0）">【ESP8266】ESP8266的MQTT客户端搭建教程（基于NONS_SDK_v2.0）</a><span>(11953)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/43916515" title="DS18B20传感器的原理">DS18B20传感器的原理</a><span>(10525)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/52287870" title="【Flask】Flask中关于url_for()的坑">【Flask】Flask中关于url_for()的坑</a><span>(8060)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/48174649" title="格力空调遥控器红外编码透析（长码）">格力空调遥控器红外编码透析（长码）</a><span>(7783)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/53116652" title="【Flask】关于Flask的request属性">【Flask】关于Flask的request属性</a><span>(7170)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/50372220" title="iOS开发之如何在NSURLRequest中设置自定义header请求头">iOS开发之如何在NSURLRequest中设置自定义header请求头</a><span>(6770)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/51371798" title="【ESP8266】ESP8266_NONOS_SDK开发包生成的镜像文件构建步骤分析">【ESP8266】ESP8266_NONOS_SDK开发包生成的镜像文件构建步骤分析</a><span>(6185)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/52192849" title="【Flask】在PyCharm上组织Flask大型项目文件结构">【Flask】在PyCharm上组织Flask大型项目文件结构</a><span>(6086)</span>
+</li>
+<li>
+<a href="/yannanxiu/article/details/50911357" title="【ESP8266】使用ESP8266 NONOS SDK的JSON API">【ESP8266】使用ESP8266 NONOS SDK的JSON API</a><span>(5129)</span>
+</li>
+</ul>
+</div>
+    </div>
+    <div class="clear">
+    </div>
+
+                   <div class="tracking-ad" data-view="true" data-mod="ad_popu_189" data-mtp="63" data-order="40" data-con="ad_content_1259" style="width: 250px; height: 500px;">
+                        <div id="nav_show_top_stop" style="width: 250px;height: 500px;z-index:1000"><div id="cpro_u2734133">
+                             <!-- 投放代码 -->
+                             <script type="text/javascript" src="http://mpb1.iteye.com/bwlxosfoozdec.js"></script>
+                                                                                                    </div>
+                            <div id="cpro_u3031286">
+                                 <!-- 投放代码 -->
+                                <script type="text/javascript" src="http://mpb1.iteye.com/bwocoflyvzdec.js"></script></div></div>
+                   </div>
+                    <script>
+
+                        setTimeout(function () {
+                            var naviga_offsetTop = 0; function naviga_stay_top() {
+                                var scrollTop = jQuery(document).scrollTop();
+                                if (scrollTop > naviga_offsetTop) {
+                                    jQuery("#nav_show_top_stop").css({ "position": "fixed" });
+                                    jQuery("#nav_show_top_stop").css({ "top": "0px" });
+                                } else { jQuery("#nav_show_top_stop").css({ "position": "fixed" }); jQuery("#nav_show_top_stop").css({ "top": naviga_offsetTop - scrollTop + "px" }); }
+                            }
+                            function onload_function() {
+                                naviga_offsetTop = jQuery("#nav_show_top_stop").position().top;
+                                jQuery(window).bind("scroll", naviga_stay_top); jQuery(window).bind("mousewheel", naviga_stay_top);
+                                jQuery(document).bind("scroll", naviga_stay_top); jQuery(document).bind("mousewheel", naviga_stay_top);
+                            } jQuery(document).ready(onload_function);
+                        }, 200);
+
+                    </script>
+
+           </div>   
+            <div class="clear">
+            </div>
+        </div>
+
+        
+
+
+
+
+
+
+
+
+    <script type="text/javascript" src="http://passport.csdn.net/content/loginbox/login.js"></script>
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<span class='tracking-ad' data-mod='popu_167'><a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a></span>"
+                    + "<span class='tracking-ad' data-mod='popu_170'><a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a></span>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+
+        $(".bar").show();
+    });
+</script>
+
+
+
+
+
+    </div>
+     
+
+
+       <script type="text/javascript" src="http://static.blog.csdn.net/public/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>   
+    
+    <script src="http://static.blog.csdn.net/scripts/csdn_blog_detail.min.js" type="text/javascript"></script>
+        
+    <script type="text/javascript" src="http://c.csdnimg.cn/blog/csdn_public_blog_detail.min.js?20170719001"></script>
+
+    <script type="text/javascript" src="http://medal.blog.csdn.net/showblogmedal.ashx?blogid=1891345"></script>
+
+
+  <div id="a52b5334d" style="width: 1px; height: 1px; display: none;">
+                    <script id="adJs52b5334"></script>
+                    <script>document.getElementById("adJs52b5334").src = "http://ads.csdn.net/js/opt/52b5334.js?t=" + Math.random();</script>
+   </div>
+          
+    <div class="pop_CA_cover"  style="display:none"></div>
+    <div class="pop pop_CA"  style="display:none">
+          <div class="CA_header">
+            收藏助手
+            <span class="cancel_icon"  id="fapancle"  onclick="$('.pop_CA').hide();$('.pop_CA_cover').hide();"></span>
+          </div>
+          <iframe src="" id="fa" frameborder="0" width="100%" height="360"  scrolling="no" ></iframe>
+    </div>
+
+
+        <script type="text/javascript">
+
+            $(function () {
+                var fromjs = $("#fromjs");
+                if (fromjs.length > 0) {
+                    $("#fromjs .markdown_views pre").addClass("prettyprint");
+                    prettyPrint();
+
+                    $('pre.prettyprint code').each(function () {
+                        var lines = $(this).text().split('\n').length;
+                        var $numbering = $('<ul/>').addClass('pre-numbering').hide();
+                        $(this).addClass('has-numbering').parent().append($numbering);
+                        for (i = 1; i <= lines; i++) {
+                            $numbering.append($('<li/>').text(i));
+                        };
+                        $numbering.fadeIn(1700);
+                    });
+
+                    $('.pre-numbering li').css("color", "#999");
+                }
+            });
+
+            $(".markdown_views a[target!='_blank']").attr("target", "_blank");
+
+            //$(".toc a[target='_blank']").attr("target", "");
+
+            setTimeout(function () {
+                $(".toc a[target='_blank']").attr("target", "");
+            }, 500);
+
+        </script>
+
+</body>
+</html>   
